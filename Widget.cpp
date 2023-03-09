@@ -1,49 +1,49 @@
 #include "Widget.h"
 #include "ScrollUtils.h"
 #include "DataParser.h"
+#include "MyApp.h"
 
 #include "QVBoxLayout"
 
-Widget::Widget(QWidget *parent) : QWidget(parent)
+namespace
+{
+    constexpr int viewHeight = 500;
+    constexpr int viewSpacing = 5;
+} // namespace
+
+Widget::Widget(QWidget* _parent)
+    : QWidget(_parent)
 {
     initView();
 
-    toogle = new QCheckBox(this);
-    connect(toogle, &QCheckBox::stateChanged, this, &Widget::toogleStateChanged);
+    toogle_ = new QCheckBox(this);
+    connect(toogle_, &QCheckBox::stateChanged, this, &Widget::toogleStateChanged);
 
-    label = new QLabel("Modify scroll event", this);
+    label_ = new QLabel("Modify scroll event", this);
 
     QHBoxLayout* toogleLayout = new QHBoxLayout;
     toogleLayout->addStretch();
-    toogleLayout->addWidget(toogle);
-    toogleLayout->addWidget(label);
+    toogleLayout->addWidget(toogle_);
+    toogleLayout->addWidget(label_);
     toogleLayout->addStretch();
 
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addLayout(toogleLayout);
-    layout->addWidget(view);
+    layout->addWidget(view_);
 }
 
 void Widget::initView()
 {
-    view = new QListView(this);
-    view->verticalScrollBar()->setObjectName("Vertical bar");
-    view->setSpacing(5);
-    view->setFixedHeight(500);
-    model = new QStringListModel(this);
-    model->setStringList(Utils::Parser::parse());
-//    fillModel();
-    view->setModel(model);
+    view_ = new QListView(this);
+    view_->verticalScrollBar()->setObjectName("Vertical bar");
+    view_->setSpacing(viewSpacing);
+    view_->setFixedHeight(viewHeight);
+    model_ = new QStringListModel(this);
+    model_->setStringList(Utils::Parser::parse());
+    view_->setModel(model_);
 }
 
-void Widget::fillModel()
+void Widget::toogleStateChanged(int _state)
 {
-    QStringList list;
-    list << "a" << "b" << "c" << "d" << "e" << "f" << "g" << "h" << "i" << "j" << "k";
-    model->setStringList(list);
-}
-
-void Widget::toogleStateChanged(int state)
-{
-    view->verticalScrollBar()->setProperty(Utils::Scroll::wheelEventModificationProperty.data(), state == 0 ? false : true);
+    MyApp::setRequireCustomWheelEvent(view_->verticalScrollBar(), _state == 0 ? false : true);
 }

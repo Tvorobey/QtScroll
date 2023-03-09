@@ -8,5 +8,4 @@ namespace Utils
     {
         QStringList parse();
     }
-}
-
+} // namespace Utils

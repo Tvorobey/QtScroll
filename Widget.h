@@ -5,24 +5,19 @@
 class Widget : public QWidget
 {
     Q_OBJECT
-public:
-    explicit Widget(QWidget *parent = nullptr);
 
-signals:
+public:
+    explicit Widget(QWidget* _parent = nullptr);
 
 private:
     void initView();
-    void fillModel();
 
 private Q_SLOTS:
-    void toogleStateChanged(int state);
+    void toogleStateChanged(int _state);
 
 private:
-    QToolButton* nextBtn;
-    QToolButton* prevBtn;
-    QListView* view;
-    QStringListModel* model;
-    QCheckBox* toogle;
-    QLabel* label;
+    QListView* view_;
+    QStringListModel* model_;
+    QCheckBox* toogle_;
+    QLabel* label_;
 };
-

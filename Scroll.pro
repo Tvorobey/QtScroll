@@ -13,12 +13,10 @@ SOURCES += \
     MyApp.cpp \
     ScrollUtils.cpp \
     Widget.cpp \
-    main.cpp \
-    MainWindow.cpp
+    main.cpp
 
 HEADERS += \
     DataParser.h \
-    MainWindow.h \
     MyApp.h \
     ScrollUtils.h \
     Widget.h

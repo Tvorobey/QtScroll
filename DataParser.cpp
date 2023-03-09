@@ -9,7 +9,7 @@
 
 namespace
 {
-    constexpr std::string_view fileName {":/data.json"};
+    constexpr std::string_view fileName { ":/data.json" };
 }
 
 QStringList Utils::Parser::parse()

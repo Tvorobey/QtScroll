@@ -2,48 +2,15 @@
 
 #include <QApplication>
 
+#include <QDebug>
+
 namespace
 {
     int updateAngleDeltaComponent(int _component)
     {
-        if (_component % QWheelEvent::DefaultDeltasPerStep != 0) // win trackpad or mouse with not standard wheel
-        {
-            return _component;
-        }
-        else // standard mouse wheel
-        {
-            const int numDegrees = _component / 8;
-            return numDegrees * qApp->wheelScrollLines();
-        }
-    }
-} // namespace
-
-namespace Utils::Scroll
-{
-    QWheelEvent modify(QWheelEvent* _event)
-    {
-#ifdef __APPLE__
-            if (_event->source() == Qt::MouseEventNotSynthesized)
-            {
-                const QPoint numPixels = _event->pixelDelta();
-                const QPoint numDegrees = _event->angleDelta();
-
-                QPoint delta {};
-
-                if (!numPixels.isNull())
-                    delta = numPixels;
-                else if (!numDegrees.isNull())
-                    delta = getAngleDelta(numDegrees);
-
-                delta *= 2;
-
-                return { _event->position(), _event->globalPosition(), {}, delta, _event->buttons(), _event->modifiers(), _event->phase(),
-                         _event->inverted(), _event->source() };
-            }
-#endif
-
-        return { _event->position(),  _event->globalPosition(), _event->pixelDelta(), _event->angleDelta(), _event->buttons(),
-                 _event->modifiers(), _event->phase(),          _event->inverted(),   _event->source() };
+        const int numDegrees = _component / 8;
+        const int numSteps = numDegrees / 15;
+        return numSteps * qApp->wheelScrollLines();
     }
 
     QPoint getAngleDelta(const QPoint& _angleDelta)
@@ -71,5 +38,36 @@ namespace Utils::Scroll
             return false;
 
         return getPcMouseWheelDelta(_e) % QWheelEvent::DefaultDeltasPerStep == 0;
+    }
+} // namespace
+
+namespace Utils::Scroll
+{
+    QWheelEvent modify(QWheelEvent* _event)
+    {
+#ifdef __APPLE__
+        if (isPcMouse(_event))
+        {
+            qDebug() << "Is pc mouse";
+
+            const QPoint numPixels = _event->pixelDelta();
+            const QPoint numDegrees = _event->angleDelta();
+
+            QPoint delta {};
+
+            if (!numPixels.isNull())
+                delta = numPixels;
+            else if (!numDegrees.isNull())
+                delta = getAngleDelta(numDegrees);
+
+            delta *= qApp->wheelScrollLines();
+
+            return { _event->position(), _event->globalPosition(), {}, delta, _event->buttons(), _event->modifiers(), _event->phase(),
+                     _event->inverted(), _event->source() };
+        }
+#endif
+
+        return { _event->position(),  _event->globalPosition(), _event->pixelDelta(), _event->angleDelta(), _event->buttons(),
+                 _event->modifiers(), _event->phase(),          _event->inverted(),   _event->source() };
     }
 } // namespace Utils::Scroll
