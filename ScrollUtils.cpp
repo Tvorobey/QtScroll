@@ -2,22 +2,8 @@
 
 #include <QApplication>
 
-#include <QDebug>
-
 namespace
 {
-    int updateAngleDeltaComponent(int _component)
-    {
-        const int numDegrees = _component / 8;
-        const int numSteps = numDegrees / 15;
-        return numSteps * qApp->wheelScrollLines();
-    }
-
-    QPoint getAngleDelta(const QPoint& _angleDelta)
-    {
-        return { updateAngleDeltaComponent(_angleDelta.x()), updateAngleDeltaComponent(_angleDelta.y()) };
-    }
-
     int getPcMouseWheelDelta(QWheelEvent* _e)
     {
         int delta { 0 };
@@ -48,19 +34,18 @@ namespace Utils::Scroll
 #ifdef __APPLE__
         if (isPcMouse(_event))
         {
-            qDebug() << "Is pc mouse";
-
             const QPoint numPixels = _event->pixelDelta();
             const QPoint numDegrees = _event->angleDelta();
 
             QPoint delta {};
 
             if (!numPixels.isNull())
+            {
                 delta = numPixels;
+                delta *= qApp->wheelScrollLines();
+            }
             else if (!numDegrees.isNull())
-                delta = getAngleDelta(numDegrees);
-
-            delta *= qApp->wheelScrollLines();
+                delta = numDegrees;
 
             return { _event->position(), _event->globalPosition(), {}, delta, _event->buttons(), _event->modifiers(), _event->phase(),
                      _event->inverted(), _event->source() };

@@ -18,10 +18,9 @@ QStringList Utils::Parser::parse()
 
     QStringList names;
 
-    // TODO: make throw or close app
     if (!file.open(QIODevice::ReadOnly))
     {
-        qDebug() << "No such file or directory";
+        qCritical("No such file or directory");
         return {};
     }
 

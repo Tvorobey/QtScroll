@@ -1,11 +1,9 @@
 #include "MyApp.h"
 
-#include <QDebug>
-#include <QScrollBar>
 #include <ScrollUtils.h>
 
-MyApp::MyApp(int& argc, char** argv, int)
-    : QApplication(argc, argv)
+MyApp::MyApp(int& _argc, char** _argv, int)
+    : QApplication(_argc, _argv)
 {}
 
 void MyApp::setRequireCustomWheelEvent(QScrollBar* _slider, bool _on)
@@ -25,7 +23,6 @@ bool MyApp::notify(QObject* _obj, QEvent* _event)
 
         if (value.isValid() && value.toBool())
         {
-            qDebug() << "Modify wheel event for: " << scrollbar->objectName();
             QWheelEvent wheelEvent = Utils::Scroll::modify(static_cast<QWheelEvent*>(_event));
             scrollbar->event(&wheelEvent);
             return true;
