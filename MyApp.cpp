@@ -1,6 +1,6 @@
 #include "MyApp.h"
 
-#include <ScrollUtils.h>
+#include "ScrollUtils.h"
 
 MyApp::MyApp(int& _argc, char** _argv, int)
     : QApplication(_argc, _argv)
