@@ -13,11 +13,20 @@ private:
     void initView();
 
 private Q_SLOTS:
-    void toogleStateChanged(int _state);
+    void scrollModifyToogleStateChanged(int _state);
+    void onScrollBarValueChanged(int);
+    void onIsGameModeToogleStateChanged(int _state);
+    void onResetBtnClicked();
+    void onWheelTimerTimeout();
 
 private:
     QListView* view_;
     QStringListModel* model_;
-    QCheckBox* toogle_;
+    QCheckBox* scrollModifyToogle_;
+    QCheckBox* isGameMode_;
+    QPushButton* resetBtn_;
     QLabel* label_;
+    QTimer* wheelTimer_;
+    QDialog* dialog_;
+    bool firstWheel_;
 };
