@@ -52,7 +52,7 @@ Widget::Widget(QWidget* _parent)
 
     isGameMode_ = new QCheckBox(this);
     isGameMode_->setChecked(true);
-    connect(isGameMode_, &QCheckBox::stateChanged, this, &Widget::onIsGameModeToogleStateChanged);
+    connect(isGameMode_, &QCheckBox::stateChanged, this, &Widget::onIsGameModeToggleStateChanged);
 
     resetBtn_ = new QPushButton("Reset", this);
     connect(resetBtn_, &QPushButton::clicked, this, &Widget::onResetBtnClicked);
@@ -94,7 +94,7 @@ void Widget::onScrollBarValueChanged(int)
     }
 }
 
-void Widget::onIsGameModeToogleStateChanged(int _state)
+void Widget::onIsGameModeToggleStateChanged(int _state)
 {
     if (_state == 0)
     {

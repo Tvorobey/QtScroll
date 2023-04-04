@@ -15,7 +15,7 @@ private:
 private Q_SLOTS:
     void scrollModifyToogleStateChanged(int _state);
     void onScrollBarValueChanged(int);
-    void onIsGameModeToogleStateChanged(int _state);
+    void onIsGameModeToggleStateChanged(int _state);
     void onResetBtnClicked();
     void onWheelTimerTimeout();
 
